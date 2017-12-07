@@ -106,6 +106,12 @@ func (l *Lexer) AcceptAlpha() {
 	l.Backup()
 }
 
+func (l *Lexer) AcceptDigits() {
+	for IsDigit(l.Next()) {
+	}
+	l.Backup()
+}
+
 func (l *Lexer) AcceptRun(valid string) {
 	for strings.IndexRune(valid, l.Next()) >= 0 {
 	}
@@ -136,7 +142,7 @@ func IsSpace(r rune) bool {
 	return unicode.IsSpace(r)
 }
 
-func IsNumber(r rune) bool {
+func IsDigit(r rune) bool {
 	return '0' <= r && r <= '9'
 }
 

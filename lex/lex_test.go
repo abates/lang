@@ -13,17 +13,17 @@ func TestRuneTests(t *testing.T) {
 		{IsSpace, '\r', true},
 		{IsSpace, '\n', true},
 		{IsSpace, 'a', false},
-		{IsNumber, '0', true},
-		{IsNumber, '1', true},
-		{IsNumber, '2', true},
-		{IsNumber, '3', true},
-		{IsNumber, '4', true},
-		{IsNumber, '5', true},
-		{IsNumber, '6', true},
-		{IsNumber, '7', true},
-		{IsNumber, '8', true},
-		{IsNumber, '9', true},
-		{IsNumber, 'a', false},
+		{IsDigit, '0', true},
+		{IsDigit, '1', true},
+		{IsDigit, '2', true},
+		{IsDigit, '3', true},
+		{IsDigit, '4', true},
+		{IsDigit, '5', true},
+		{IsDigit, '6', true},
+		{IsDigit, '7', true},
+		{IsDigit, '8', true},
+		{IsDigit, '9', true},
+		{IsDigit, 'a', false},
 		{IsAlpha, 'a', true},
 		{IsAlpha, 'z', true},
 		{IsAlpha, 'A', true},
@@ -60,7 +60,7 @@ func TestLexing(t *testing.T) {
 			return lexWord
 		}
 
-		if IsNumber(lexer.Peek()) {
+		if IsDigit(lexer.Peek()) {
 			return lexNumber
 		}
 
