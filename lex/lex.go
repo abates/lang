@@ -118,6 +118,14 @@ func (l *Lexer) AcceptRun(valid string) {
 	l.Backup()
 }
 
+func (l *Lexer) AcceptSequence(sequence string) bool {
+	if l.input[l.pos:l.pos+len(sequence)] == sequence {
+		l.pos += len(sequence)
+		return true
+	}
+	return false
+}
+
 func (l *Lexer) Errorf(format string, args ...interface{}) StateFn {
 	l.tokens <- Token{
 		Type:    ILLEGAL,
@@ -136,6 +144,10 @@ func (l *Lexer) Emit(tokenType TokenType) {
 
 func (l *Lexer) CurrentInput() string {
 	return l.input[l.start:l.pos]
+}
+
+func IsEndOfLine(r rune) bool {
+	return r == '\n' || r == '\r'
 }
 
 func IsSpace(r rune) bool {

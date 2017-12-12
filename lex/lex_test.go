@@ -74,7 +74,7 @@ func TestLexing(t *testing.T) {
 	}
 
 	lexNumber = func(lexer *Lexer) StateFn {
-		lexer.AcceptRun("0123456789")
+		lexer.AcceptDigits()
 		lexer.Emit(number)
 		return lex
 	}
@@ -121,5 +121,42 @@ func TestLexing(t *testing.T) {
 	e := Token{EOF, ""}
 	if token != e {
 		t.Errorf("Expected %v got %v", e, token)
+	}
+}
+
+func TestAcceptRun(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"aabbcc", "cc"},
+	}
+
+	for i, test := range tests {
+		lexer := New(test.input, nil)
+		lexer.AcceptRun("ab")
+		if lexer.input[lexer.pos:] != test.expected {
+			t.Errorf("tests[%d] expected %q got %q", i, test.expected, lexer.input[lexer.pos:])
+		}
+	}
+}
+
+func TestAcceptSequence(t *testing.T) {
+	tests := []struct {
+		input    string
+		sequence string
+		expected string
+	}{
+		{"aabbcc", "abc", "aabbcc"},
+		{"abcc", "abc", "c"},
+		{"foo ©2017", "foo ©", "2017"},
+	}
+
+	for i, test := range tests {
+		lexer := New(test.input, nil)
+		lexer.AcceptSequence(test.sequence)
+		if lexer.input[lexer.pos:] != test.expected {
+			t.Errorf("tests[%d] expected %q got %q", i, test.expected, lexer.input[lexer.pos:])
+		}
 	}
 }
